@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import TracePlot from "./components/TracePlot";
+import ButtonsField from "./components/ButtonsField";
+import Terminal from "./components/Terminal";
+
+import { useState } from 'react'
 
 function App() {
+
+  const [enableStartBtn, setEnableStartBtn] = useState(true)
+  const [enableStopBtn, setEnableStopBtn] = useState(false)
+
+  function setEnableStartBtnWrapper(isEnable) {setEnableStartBtn(isEnable)}
+  function setEnableStopBtnWrapper(isEnable) {setEnableStopBtn(isEnable)}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen pt-3 bg-blue-900">
+
+    <div className="w-full h-4/5 flex">
+      <div className="w-5/6 mx-3">
+        <TracePlot />
+      </div>
+
+      <div className="w-1/6">
+        <ButtonsField 
+          enableStartBtn={enableStartBtn} 
+          enableStopBtn={enableStopBtn} 
+          setEnableStartBtnWrapper={setEnableStartBtnWrapper}
+          setEnableStopBtnWrapper={setEnableStopBtnWrapper}
+          />
+      </div>
+    </div>
+
+    <div className="fixed bottom-0 w-full">
+      <Terminal />
+    </div>
+
     </div>
   );
 }
