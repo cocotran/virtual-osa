@@ -45,12 +45,26 @@ def hello(name: str):
     return "Hello " + name
 
 
-# API path for all commands except SETLIM, ECHO & TRACE 
+# API path for all commands
 @app.get("/cmd/{cmd}")
 def get_instrument_info(cmd: str, q: Optional[str] = None):
+    # URL to connect to virtual OSA
     url: str = Commands.ROOT_URL.value + cmd
+
+    # Query for LIM and ECHO commands
     query: str = "/" + q if q != None else ""
+
     while True:
+        # Make request to virtual OSA
         response: Response = requests.get(url=url + query)
-        if response.text.startswith(Commands.READY.value):
-            return response.text
+
+        if cmd == Commands.TRACE.value: # TRACE command
+            try:
+                return response.json()
+            except:
+                print("Not a valid JSON object")
+
+        else:   # all others commands
+            if response.text.startswith(Commands.READY.value):
+                return response.text
+
