@@ -1,7 +1,28 @@
-function StopButton({}) {
+import CommandsEnum from "../../enum/commands";
+
+
+function StopButton({enableStopBtn, setEnableStartBtnWrapper, setEnableStopBtnWrapper}) {
+
+    function onClickHandle() {
+        if (enableStopBtn) {
+            const url = CommandsEnum.ROOT_URL + CommandsEnum.STOP
+            fetch(url).then(res => res.text()).then(data => handleData(data))
+        }
+    }
+
+    function handleData(data) {
+        if (data.startsWith(CommandsEnum.READY, 1)) {   // data is in form "+READY>", '+' is index 1
+            const state = data.replace(CommandsEnum.READY, "") != '"STOP:OK"'
+            setEnableStartBtnWrapper(!state)
+            setEnableStopBtnWrapper(state)
+        }
+    }
+
     return (
         <div>
-            <button className="mt-10 w-3/5 py-5 font-bold text-xl bg-red-500 rounded-md">Stop Button</button>
+            <button className={(enableStopBtn ? "bg-red-500 cursor-pointer " : "bg-gray-800 cursor-not-allowed ") + " mt-10 w-3/5 py-5 text-xl font-bold rounded-md"}
+            onClick={onClickHandle}
+            >Stop Button</button>
         </div>
     )
 }
