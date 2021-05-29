@@ -1,32 +1,63 @@
 import { func } from 'prop-types';
-import {useState, useRef } from 'react'
+import {useState, useEffect } from 'react'
 
 import CommandsEnum from '../enum/commands';
 
-function Terminal({}) {
-
-    const ref = useRef(null);
+function Terminal({terminalContent, setTerminalContentWrapper}) {
 
     const [content, setContent] = useState([]);
+
+    useEffect(() => {
+        
+        if (terminalContent != "") {
+            if (terminalContent.startsWith(CommandsEnum.READY, 1)) {
+                addNewLine("RES", terminalContent);
+            }
+            else {
+                addNewLine("SCRIPT", terminalContent);
+            }
+            setTerminalContentWrapper("")
+        }
+
+    }, [terminalContent])
+
+    function addNewLine(type, script) {
+        const contentCopy = [...content]
+
+        switch (type) {
+            case "SCRIPT":
+                const newContent = new TerminalLine("SCRIPT", script)
+                contentCopy.push(newContent)
+                break;
+
+            case "RES":
+                const newResponse = new TerminalLine("RES", script)
+                contentCopy.push(newResponse)
+                break;
+
+            case "HELP":
+                const newHelpResponse = new TerminalLine("HELP", script)
+                contentCopy.push(newHelpResponse)
+                break;
+
+            default:
+                break;
+        }
+        setContent(contentCopy);
+    }
 
     function onKeyUpHandle(event) {
         const script = event.target.value;
         if (event.keyCode === 13) {
-            const contentCopy = [...content]
-            
-            const newContent = new TerminalLine("SCRIPT", script)
-            contentCopy.push(newContent)
+            addNewLine("SCRIPT", script);
             event.target.value = ""
 
             if (script.toUpperCase() in CommandsEnum) {
-                const newResponse = new TerminalLine("RES", "Response")
-                contentCopy.push(newResponse)
+                // TODO: 
             }
             else {
-                const newHelpResponse = new TerminalLine("HELP", "Help Response")
-                contentCopy.push(newHelpResponse)
+                addNewLine("HELP", "Help Response");
             }
-            setContent(contentCopy);
         }
     }
 
@@ -50,7 +81,7 @@ function Terminal({}) {
         <label htmlFor="current">
             <div className="pb-5 h-60 bg-gray-900 text-lg scroller border-t-2 border-gray-500 flex flex-col-reverse">
 
-                <div ref={ref} className="mx-10">
+                <div className="mx-10">
                     <InputCommandLine onKeyUpHandle={onKeyUpHandle} />
                 </div>
 

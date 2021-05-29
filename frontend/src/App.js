@@ -9,8 +9,14 @@ function App() {
   const [enableStartBtn, setEnableStartBtn] = useState(true)
   const [enableStopBtn, setEnableStopBtn] = useState(false)
 
+  const [terminalContent, setTerminalContent] = useState("")
+
   function setEnableStartBtnWrapper(isEnable) {setEnableStartBtn(isEnable)}
   function setEnableStopBtnWrapper(isEnable) {setEnableStopBtn(isEnable)}
+
+  function setTerminalContentWrapper(content) {
+    setTerminalContent(content)
+  }
 
   return (
     <div className="h-screen pt-3 bg-blue-900">
@@ -26,12 +32,13 @@ function App() {
           enableStopBtn={enableStopBtn} 
           setEnableStartBtnWrapper={setEnableStartBtnWrapper}
           setEnableStopBtnWrapper={setEnableStopBtnWrapper}
+          setTerminalContentWrapper={setTerminalContentWrapper}
           />
       </div>
     </div>
 
     <div className="fixed bottom-0 w-full">
-      <Terminal />
+      <Terminal terminalContent={terminalContent} setTerminalContentWrapper={setTerminalContentWrapper} />
     </div>
 
     </div>
