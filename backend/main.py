@@ -46,7 +46,7 @@ def hello(name: str):
 
 
 # API path for all commands
-@app.get("/cmd/{cmd}")
+@app.get("/api/{cmd}")
 def get_instrument_info(cmd: str, q: Optional[str] = None):
     # URL to connect to virtual OSA
     url: str = Commands.ROOT_URL.value + cmd
