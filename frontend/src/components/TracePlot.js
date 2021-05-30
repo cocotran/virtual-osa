@@ -40,6 +40,15 @@ function TracePlot({}) {
     window.addEventListener("resize", handleResize);
   }
 
+  function convertToISODate(inputDate) {
+    // Input date is in format "YY.MM.DD hh:mm:ss"
+    const split = inputDate.split(' ')
+    const date = split[0].split('.')
+    const time = split[1].split(':')
+    const newDate = new Date(Number("20" + date[0]), Number(date[1]), Number(date[2]), Number(time[0]), Number(time[1]), Number(time[2])) 
+    return newDate.toISOString()
+  }
+
   // function getXaxisLimit() {
   //   const url = CommandsEnum.ROOT_URL + CommandsEnum.LIM
   //   fetch(url)
@@ -68,7 +77,7 @@ function TracePlot({}) {
             "Optical spectrum " +
             data.instrument_model +
             " at " +
-            data.timestamp,
+            convertToISODate(data.timestamp),
           xaxis: {
             title: data.xlabel + " (" + data.xunits + ")",
           },
