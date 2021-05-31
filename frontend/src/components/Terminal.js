@@ -6,7 +6,7 @@ function Terminal({
   terminalContent,
   setTerminalContentWrapper,
   setEnableStartBtnWrapper,
-  setEnableStopBtnWrapper,
+  setGetSinleTraceWrapper
 }) {
   const [content, setContent] = useState([]);
 
@@ -49,13 +49,18 @@ function Terminal({
               res.replace(CommandsEnum.READY, "") != '"RUN:OK"'
             );
           });
-        } else if (command.toUpperCase().includes("STOP")) {
+        } else if (command.toUpperCase().includes(CommandsEnum.STOP)) {
           sendQuery(command.toUpperCase(), "").then((res) => {
             addNewLine("RES", res);
             setEnableStartBtnWrapper(
               res.replace(CommandsEnum.READY, "") == '"STOP:OK"'
             );
           });
+        } else if (command.toUpperCase().includes(CommandsEnum.SINGLE)) {
+          sendQuery(command.toUpperCase(), "").then(res => {
+            addNewLine("RES", res);
+            setGetSinleTraceWrapper(res.replace(CommandsEnum.READY, "") == '"SINGLE:OK"')
+          })
         } else if (command.toUpperCase() in CommandsEnum) {
           sendQuery(command.toUpperCase(), "").then((res) =>
             addNewLine("RES", res)
@@ -122,7 +127,10 @@ function Terminal({
     const url = CommandsEnum.ROOT_URL + command;
     const query = q ? "?q=" + q : "";
     const res = await fetch(url + query);
-    return res.text();
+    if (command == CommandsEnum.TRACE)
+      return res.json()
+    else
+      return res.text();
   }
 
   return (

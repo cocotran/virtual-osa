@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 function App() {
   const [enableStartBtn, setEnableStartBtn] = useState(true);
 
+  const [getSingleTrace, setGetSingleTrace] = useState(true)
+
   const [terminalContent, setTerminalContent] = useState("");
 
   function setEnableStartBtnWrapper(isEnable) {
@@ -17,11 +19,19 @@ function App() {
     setTerminalContent(content);
   }
 
+  function setGetSinleTraceWrapper(getSingleTrace) {
+    setGetSingleTrace(getSingleTrace);
+  }
+
   return (
     <div className="h-screen pt-3 bg-blue-900">
       <div className="w-full h-4/5 flex">
         <div className="w-5/6 mx-3">
-          <TracePlot enableStartBtn={enableStartBtn} />
+          <TracePlot 
+            enableStartBtn={enableStartBtn}
+            getSingleTrace={getSingleTrace}
+            setGetSinleTraceWrapper={setGetSinleTraceWrapper} 
+          />
         </div>
 
         <div className="w-1/6">
@@ -29,6 +39,8 @@ function App() {
             enableStartBtn={enableStartBtn}
             setEnableStartBtnWrapper={setEnableStartBtnWrapper}
             setTerminalContentWrapper={setTerminalContentWrapper}
+            getSingleTrace={getSingleTrace}
+            setGetSinleTraceWrapper={setGetSinleTraceWrapper}
           />
         </div>
       </div>
@@ -38,6 +50,7 @@ function App() {
           terminalContent={terminalContent}
           setTerminalContentWrapper={setTerminalContentWrapper}
           setEnableStartBtnWrapper={setEnableStartBtnWrapper}
+          setGetSinleTraceWrapper={setGetSinleTraceWrapper}
         />
       </div>
     </div>

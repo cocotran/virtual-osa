@@ -2,13 +2,12 @@ import CommandsEnum from "../../enum/commands";
 
 import { useState } from "react";
 
-function SingleButton({ setTerminalContentWrapper }) {
-  const [enableSingleBtn, setEnableSingleBtn] = useState(true);
+function SingleButton({ setTerminalContentWrapper, getSingleTrace, setGetSinleTraceWrapper }) {
 
   function onClickHandle() {
-    if (enableSingleBtn) {
+    if (getSingleTrace) {
       setTerminalContentWrapper(CommandsEnum.SINGLE);
-      setEnableSingleBtn(false);
+      setGetSinleTraceWrapper(false);
     }
   }
 
@@ -16,7 +15,7 @@ function SingleButton({ setTerminalContentWrapper }) {
     <div>
       <button
         className={
-          (enableSingleBtn
+          (getSingleTrace
             ? "bg-gray-300 cursor-pointer "
             : "bg-gray-800 cursor-not-allowed ") +
           " mt-10 w-3/5 py-5 text-xl font-bold rounded-md"

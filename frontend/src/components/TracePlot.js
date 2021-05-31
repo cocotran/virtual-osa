@@ -6,7 +6,7 @@ import useWebSocket from "react-use-websocket";
 
 import CommandsEnum from "../enum/commands";
 
-function TracePlot({ enableStartBtn }) {
+function TracePlot({ enableStartBtn, getSingleTrace, setGetSinleTraceWrapper }) {
   // const [plotLimit, setPlotLimit] = useState([])
   const [plotTrace, setPlotTrace] = useState({});
   const [plotLayout, setPlotLayout] = useState({});
@@ -74,17 +74,34 @@ function TracePlot({ enableStartBtn }) {
   );
 
   useEffect(() => {
-    async function updatePlot() {
+    async function updatePlot(traceJson) {
       // sendMessage('Hello')
       // console.log(lastJsonMessage)
       const dimension = await getPlotDimension();
-      drawTrace(lastJsonMessage, dimension);
+      drawTrace(traceJson, dimension);
     }
 
-    if (!enableStartBtn && lastJsonMessage != null) updatePlot();
+    async function updateSingleTrace() {
+      const singleTrace = await fetch(CommandsEnum.ROOT_URL + CommandsEnum.TRACE);
+      const singleTraceJson = await singleTrace.json();
+      const dimension = await getPlotDimension();
+      drawTrace(singleTraceJson, dimension);
+      console.log("Update single trace");
+      console.log(singleTraceJson)
+    }
+
+    if (!enableStartBtn && getSingleTrace && lastJsonMessage != null) {
+      updatePlot(lastJsonMessage);
+    } else if (enableStartBtn && !getSingleTrace) {
+      
+      updateSingleTrace();
+      setGetSinleTraceWrapper(true);
+    }
+    
 
     console.log(lastJsonMessage);
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, getSingleTrace]);
+
 
   function drawTrace(data, dimension) {
     console.log("Updating graph");
