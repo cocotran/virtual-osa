@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 function App() {
   const [enableStartBtn, setEnableStartBtn] = useState(true);
 
-  const [getSingleTrace, setGetSingleTrace] = useState(true)
+  const [getSingleTrace, setGetSingleTrace] = useState(true);
 
   const [terminalContent, setTerminalContent] = useState("");
 
@@ -24,13 +24,13 @@ function App() {
   }
 
   return (
-    <div className="h-screen pt-3 bg-blue-900">
+    <div className="h-screen pt-3 bg-vscode">
       <div className="w-full h-4/5 flex">
         <div className="w-5/6 mx-3">
-          <TracePlot 
+          <TracePlot
             enableStartBtn={enableStartBtn}
             getSingleTrace={getSingleTrace}
-            setGetSinleTraceWrapper={setGetSinleTraceWrapper} 
+            setGetSinleTraceWrapper={setGetSinleTraceWrapper}
           />
         </div>
 

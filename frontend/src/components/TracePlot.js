@@ -6,7 +6,11 @@ import useWebSocket from "react-use-websocket";
 
 import CommandsEnum from "../enum/commands";
 
-function TracePlot({ enableStartBtn, getSingleTrace, setGetSinleTraceWrapper }) {
+function TracePlot({
+  enableStartBtn,
+  getSingleTrace,
+  setGetSinleTraceWrapper,
+}) {
   // const [plotLimit, setPlotLimit] = useState([])
   const [plotTrace, setPlotTrace] = useState({});
   const [plotLayout, setPlotLayout] = useState({});
@@ -61,7 +65,7 @@ function TracePlot({ enableStartBtn, getSingleTrace, setGetSinleTraceWrapper }) 
   //       });
   // }
 
-  const socketUrl = "ws://localhost:8000/ws";
+  const socketUrl = CommandsEnum.SOCKET_URL;
 
   const { sendMessage, lastJsonMessage, readyState } = useWebSocket(
     socketUrl,
@@ -82,26 +86,25 @@ function TracePlot({ enableStartBtn, getSingleTrace, setGetSinleTraceWrapper }) 
     }
 
     async function updateSingleTrace() {
-      const singleTrace = await fetch(CommandsEnum.ROOT_URL + CommandsEnum.TRACE);
+      const singleTrace = await fetch(
+        CommandsEnum.ROOT_URL + CommandsEnum.TRACE
+      );
       const singleTraceJson = await singleTrace.json();
       const dimension = await getPlotDimension();
       drawTrace(singleTraceJson, dimension);
       console.log("Update single trace");
-      console.log(singleTraceJson)
+      console.log(singleTraceJson);
     }
 
     if (!enableStartBtn && getSingleTrace && lastJsonMessage != null) {
       updatePlot(lastJsonMessage);
     } else if (enableStartBtn && !getSingleTrace) {
-      
       updateSingleTrace();
       setGetSinleTraceWrapper(true);
     }
-    
 
     console.log(lastJsonMessage);
   }, [lastJsonMessage, getSingleTrace]);
-
 
   function drawTrace(data, dimension) {
     console.log("Updating graph");

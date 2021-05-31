@@ -7,7 +7,7 @@ function ButtonsField({
   setEnableStartBtnWrapper,
   setTerminalContentWrapper,
   getSingleTrace,
-  setGetSinleTraceWrapper
+  setGetSinleTraceWrapper,
 }) {
   return (
     <div className="text-center">
@@ -21,8 +21,8 @@ function ButtonsField({
         setEnableStartBtnWrapper={setEnableStartBtnWrapper}
         setTerminalContentWrapper={setTerminalContentWrapper}
       />
-      <SingleButton 
-        setTerminalContentWrapper={setTerminalContentWrapper} 
+      <SingleButton
+        setTerminalContentWrapper={setTerminalContentWrapper}
         getSingleTrace={getSingleTrace}
         setGetSinleTraceWrapper={setGetSinleTraceWrapper}
       />

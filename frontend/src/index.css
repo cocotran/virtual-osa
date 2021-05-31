@@ -13,3 +13,7 @@ input:focus {
 .scroller {
   overflow: auto;
 }
+
+.bg-vscode {
+  background-color: #282c34;
+}
