@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 
 import CommandsEnum from "../enum/commands";
 
-function Terminal({ terminalContent, setTerminalContentWrapper }) {
+function Terminal({
+  terminalContent,
+  setTerminalContentWrapper,
+  setEnableStartBtnWrapper,
+  setEnableStopBtnWrapper,
+}) {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
@@ -28,11 +33,29 @@ function Terminal({ terminalContent, setTerminalContentWrapper }) {
           sendQuery(string[0].toUpperCase(), string[1]).then((res) =>
             addNewLine("RES", res)
           );
-        } else if (command.toUpperCase().includes("ECHO")) {
+        } else if (command.toUpperCase().includes(CommandsEnum.ECHO)) {
           const string = command.split(" ");
           sendQuery(string[0].toUpperCase(), string[1]).then((res) =>
             addNewLine("RES", res)
           );
+        } else if (command.toUpperCase().includes(CommandsEnum.START)) {
+          sendQuery(command.toUpperCase(), "").then((res) => {
+            addNewLine(
+              "RES",
+              res +
+                " Start data streaming with intrument. It might take few minutes to start."
+            );
+            setEnableStartBtnWrapper(
+              res.replace(CommandsEnum.READY, "") != '"RUN:OK"'
+            );
+          });
+        } else if (command.toUpperCase().includes("STOP")) {
+          sendQuery(command.toUpperCase(), "").then((res) => {
+            addNewLine("RES", res);
+            setEnableStartBtnWrapper(
+              res.replace(CommandsEnum.READY, "") == '"STOP:OK"'
+            );
+          });
         } else if (command.toUpperCase() in CommandsEnum) {
           sendQuery(command.toUpperCase(), "").then((res) =>
             addNewLine("RES", res)

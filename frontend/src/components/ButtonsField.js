@@ -4,9 +4,7 @@ import SingleButton from "./Buttons/SingleButton";
 
 function ButtonsField({
   enableStartBtn,
-  enableStopBtn,
   setEnableStartBtnWrapper,
-  setEnableStopBtnWrapper,
   setTerminalContentWrapper,
 }) {
   return (
@@ -14,13 +12,11 @@ function ButtonsField({
       <StartButton
         enableStartBtn={enableStartBtn}
         setEnableStartBtnWrapper={setEnableStartBtnWrapper}
-        setEnableStopBtnWrapper={setEnableStopBtnWrapper}
         setTerminalContentWrapper={setTerminalContentWrapper}
       />
       <StopButton
-        enableStopBtn={enableStopBtn}
+        enableStartBtn={enableStartBtn}
         setEnableStartBtnWrapper={setEnableStartBtnWrapper}
-        setEnableStopBtnWrapper={setEnableStopBtnWrapper}
         setTerminalContentWrapper={setTerminalContentWrapper}
       />
       <SingleButton setTerminalContentWrapper={setTerminalContentWrapper} />

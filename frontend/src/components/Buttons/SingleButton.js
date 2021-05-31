@@ -9,18 +9,6 @@ function SingleButton({ setTerminalContentWrapper }) {
     if (enableSingleBtn) {
       setTerminalContentWrapper(CommandsEnum.SINGLE);
       setEnableSingleBtn(false);
-      const url = CommandsEnum.ROOT_URL + CommandsEnum.SINGLE;
-      fetch(url)
-        .then((res) => res.text())
-        .then((data) => handleData(data));
-    }
-  }
-
-  function handleData(data) {
-    if (data.startsWith(CommandsEnum.READY, 1)) {
-      // data is in form "+READY>", '+' is index 1
-      setTerminalContentWrapper(data);
-      setEnableSingleBtn(data.replace(CommandsEnum.READY, "") == '"SINGLE:OK"');
     }
   }
 
