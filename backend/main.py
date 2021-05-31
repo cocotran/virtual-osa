@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, WebSocket
+
 from typing import Optional
 
-from enum import Enum
 import requests
+import asyncio
+from enum import Enum
 from requests.models import Response
+from time import sleep
+
 
 # Initialize Fast API app
 app = FastAPI()
@@ -68,3 +73,14 @@ def get_instrument_info(cmd: str, q: Optional[str] = None):
             if response.text.startswith(Commands.READY.value):
                 return response.text
 
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        try:
+            await asyncio.sleep(1)
+            trace: Response = requests.get(Commands.ROOT_URL.value + Commands.TRACE.value)
+            await websocket.send_json(trace.json())
+        except:
+            pass
