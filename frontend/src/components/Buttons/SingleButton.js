@@ -1,7 +1,5 @@
 import CommandsEnum from "../../enum/commands";
 
-import { useState } from "react";
-
 function SingleButton({
   setTerminalContentWrapper,
   getSingleTrace,

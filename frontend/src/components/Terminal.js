@@ -135,7 +135,7 @@ function Terminal({
 
   return (
     <label htmlFor="current">
-      <div className="pb-10 h-48 bg-gray-900 text-lg scroller border-t-2 border-gray-500 flex flex-col-reverse">
+      <div className="h-48 pb-10 bg-gray-900 text-lg scroller border-t-2 border-gray-500 flex flex-col-reverse">
         <div className="mx-10">
           <InputCommandLine onKeyUpHandle={onKeyUpHandle} />
         </div>

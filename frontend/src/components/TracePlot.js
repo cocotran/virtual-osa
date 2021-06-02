@@ -10,8 +10,8 @@ function TracePlot({
   enableStartBtn,
   getSingleTrace,
   setGetSinleTraceWrapper,
+  isMeter,
 }) {
-  // const [plotLimit, setPlotLimit] = useState([])
   const [plotTrace, setPlotTrace] = useState({});
   const [plotLayout, setPlotLayout] = useState({});
 
@@ -56,14 +56,20 @@ function TracePlot({
     return newDate.toISOString();
   }
 
-  // function getXaxisLimit() {
-  //   const url = CommandsEnum.ROOT_URL + CommandsEnum.LIM
-  //   fetch(url)
-  //       .then((res) => res.text())
-  //       .then((data) => {
-  //           const limit = data.replace(/['"]+/g, '').replace(CommandsEnum.READY,'').replace(/[\[\]']+/g, '').replace(/ /g,'').split(',')
-  //       });
-  // }
+  async function meterToFrequency(meterArray) {
+    // Formula:  f = C/λ
+    // λ (Lambda) = Wavelength in meters
+    // c = Speed of Light (299,792,458 m/s)
+    // f = Frequency (MHz)
+
+    // Speed of Light (299,792,458 m/s)
+    const C = 299792458;
+
+    const frequencyArray = meterArray.map((item) => {
+      return item * C;
+    });
+    return frequencyArray;
+  }
 
   const socketUrl = CommandsEnum.SOCKET_URL;
 
@@ -109,7 +115,7 @@ function TracePlot({
   function drawTrace(data, dimension) {
     console.log("Updating graph");
     setPlotTrace({
-      x: data.xdata,
+      x: isMeter ? data.xdata : meterToFrequency(data.xdata),
       y: data.ydata,
       type: "scatter",
     });
@@ -123,7 +129,7 @@ function TracePlot({
         " at " +
         convertToISODate(data.timestamp),
       xaxis: {
-        title: data.xlabel + " (" + data.xunits + ")",
+        title: data.xlabel + " (" + (isMeter ? data.xunits : "MHz") + ")",
       },
       yaxis: {
         title: data.ylabel + " (" + data.yunits + ")",

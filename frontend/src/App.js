@@ -11,6 +11,8 @@ function App() {
 
   const [terminalContent, setTerminalContent] = useState("");
 
+  const [isMeter, setIsMeter] = useState(true);
+
   function setEnableStartBtnWrapper(isEnable) {
     setEnableStartBtn(isEnable);
   }
@@ -31,6 +33,7 @@ function App() {
             enableStartBtn={enableStartBtn}
             getSingleTrace={getSingleTrace}
             setGetSinleTraceWrapper={setGetSinleTraceWrapper}
+            isMeter={isMeter}
           />
         </div>
 
@@ -41,6 +44,8 @@ function App() {
             setTerminalContentWrapper={setTerminalContentWrapper}
             getSingleTrace={getSingleTrace}
             setGetSinleTraceWrapper={setGetSinleTraceWrapper}
+            isMeter={isMeter}
+            setIsMeter={setIsMeter}
           />
         </div>
       </div>

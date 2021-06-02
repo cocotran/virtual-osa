@@ -8,9 +8,11 @@ function ButtonsField({
   setTerminalContentWrapper,
   getSingleTrace,
   setGetSinleTraceWrapper,
+  isMeter,
+  setIsMeter,
 }) {
   return (
-    <div className="text-center">
+    <div className="relative text-center">
       <StartButton
         enableStartBtn={enableStartBtn}
         setEnableStartBtnWrapper={setEnableStartBtnWrapper}
@@ -26,6 +28,15 @@ function ButtonsField({
         getSingleTrace={getSingleTrace}
         setGetSinleTraceWrapper={setGetSinleTraceWrapper}
       />
+
+      <button
+        className="bg-gray-400 mt-32 w-3/5 py-5 rounded-md"
+        onClick={() => {
+          setIsMeter(!isMeter);
+        }}
+      >
+        Convert to {isMeter ? "Frequency" : "Meter"}
+      </button>
     </div>
   );
 }
