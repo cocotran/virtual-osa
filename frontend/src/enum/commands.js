@@ -1,7 +1,7 @@
 const CommandsEnum = Object.freeze({
   READY: "+READY>",
-  ROOT_URL: "https://virtual-osa.herokuapp.com/api/",
-  SOCKET_URL: "wss://virtual-osa.herokuapp.com/ws",
+  ROOT_URL: "http://127.0.0.1:8000/api/",
+  SOCKET_URL: "ws://127.0.0.1:8000/ws",
   IDN: "IDN",
   LIM: "LIM",
   SETLIM: "LIM/",
