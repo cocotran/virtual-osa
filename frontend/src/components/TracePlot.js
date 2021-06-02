@@ -15,6 +15,7 @@ function TracePlot({
   const [plotTrace, setPlotTrace] = useState({});
   const [plotLayout, setPlotLayout] = useState({});
 
+  // Set dimension of graph base on screen width
   async function getPlotDimension() {
     return {
       width: window.innerWidth * (5 / 6),
@@ -22,6 +23,7 @@ function TracePlot({
     };
   }
 
+  // Initialize graph dimension
   useEffect(() => {
     async function setPlot() {
       const dimension = await getPlotDimension();
@@ -31,6 +33,7 @@ function TracePlot({
     setPlot();
   }, []);
 
+  // Set graph dimension when resize screen
   async function handleResize(event) {
     const dimension = await getPlotDimension();
     setPlotLayout(dimension);
@@ -40,6 +43,7 @@ function TracePlot({
     window.addEventListener("resize", handleResize);
   }
 
+  // Convert string date from instrument to ISO format
   function convertToISODate(inputDate) {
     // Input date is in format "YY.MM.DD hh:mm:ss"
     const split = inputDate.split(" ");
@@ -56,6 +60,7 @@ function TracePlot({
     return newDate.toISOString();
   }
 
+  // Convert value in meter to MHz
   async function meterToFrequency(meterArray) {
     // Formula:  f = C/λ
     // λ (Lambda) = Wavelength in meters
@@ -83,6 +88,7 @@ function TracePlot({
     !enableStartBtn
   );
 
+  // Listening to data from instrument and update graph 
   useEffect(() => {
     async function updatePlot(traceJson) {
       // sendMessage('Hello')
@@ -115,7 +121,7 @@ function TracePlot({
   function drawTrace(data, dimension) {
     console.log("Updating graph");
     setPlotTrace({
-      x: isMeter ? data.xdata : meterToFrequency(data.xdata),
+      x: isMeter ? data.xdata : meterToFrequency(data.xdata), // Display value in meter or MHz base on user input
       y: data.ydata,
       type: "scatter",
     });
