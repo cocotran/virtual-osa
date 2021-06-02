@@ -10,6 +10,9 @@ from enum import Enum
 from requests.models import Response
 from time import sleep
 
+import json
+import backoff
+
 
 # Initialize Fast API app
 app = FastAPI()
@@ -45,6 +48,21 @@ class Commands(Enum):
     TRACE = "TRACE"     # returns instrument state
 
 
+def is_random_string(str: str) -> bool:
+    try:
+        json_object = json.loads(str)
+    except ValueError as e:
+        return not str.startswith(Commands.READY.value)
+    return False
+
+# Retry if response is random string
+@backoff.on_predicate(backoff.constant, is_random_string, max_tries=5, interval=1)
+@backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+def get_data(url: str, query: str) -> str:
+    response: Response = requests.get(url=url + query)
+    return response.text
+
+
 @app.get("/hello/{name}")
 def hello(name: str):
     return "Hello " + name
@@ -59,19 +77,9 @@ def get_instrument_info(cmd: str, q: Optional[str] = None):
     # Query for LIM and ECHO commands
     query: str = "/" + q if q != None else ""
 
-    while True:
-        # Make request to virtual OSA
-        response: Response = requests.get(url=url + query)
-
-        if cmd == Commands.TRACE.value: # TRACE command
-            try:
-                return response.json()
-            except:
-                print("Not a valid JSON object")
-
-        else:   # all others commands
-            if response.text.startswith(Commands.READY.value):
-                return response.text
+    res = get_data(url, query)
+    
+    return res if cmd != Commands.TRACE.value else json.loads(res)
 
 
 @app.websocket("/ws")

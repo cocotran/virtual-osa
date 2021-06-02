@@ -61,7 +61,7 @@ function TracePlot({
   }
 
   // Convert value in meter to MHz
-  async function meterToFrequency(meterArray) {
+  function meterToFrequency(meterArray) {
     // Formula:  f = C/λ
     // λ (Lambda) = Wavelength in meters
     // c = Speed of Light (299,792,458 m/s)
